@@ -863,8 +863,7 @@
     document.getElementById('img-lateral').src = 'data:image/jpeg;base64,' + FOTOS.lateral;
     document.getElementById('img-arriba').src = 'data:image/jpeg;base64,' + FOTOS.arriba;
     document.getElementById('img-abajo').src = 'data:image/jpeg;base64,' + FOTOS.abajo;
-    document.getElementById('bgPhoto').style.backgroundImage =
-      'url(data:image/jpeg;base64,' + FOTOS.lateral + ')';
+    document.getElementById('bgPhoto').style.backgroundImage = 'url(data:image/jpeg;base64,' + FOTOS.lateral + ')';
 
     /* ── PARTÍCULAS ── */
     const sp = document.getElementById('sparkles');
@@ -879,9 +878,8 @@
       s.style.animationDelay = (Math.random() * 22) + 's';
       sp.appendChild(s);
     }
-    
 
- // --- LÓGICA DEL REPRODUCTOR DE YOUTUBE ---
+    // --- LÓGICA DEL REPRODUCTOR DE YOUTUBE ---
     let player;
     let isPlaying = false;
 
@@ -901,82 +899,76 @@
           'playsinline': 1,
           'controls': 0,
           'loop': 1,
-          'playlist': 'ZL_NhImx4LI' // Necesario en YouTube para que el loop funcione
+          'playlist': 'ZL_NhImx4LI' 
         }
       });
     }
 
-    // 3. Conectar la interacción del usuario con la música y la animación
+    /* ── ABRIR SOBRE Y CONTROL DE MÚSICA UNIFICADO ── */
     document.addEventListener('DOMContentLoaded', () => {
       const abrirBtn = document.getElementById('abrirBtn');
+      const sello = document.getElementById('sello');
       const musicCtrl = document.getElementById('music-ctrl');
       const songBar = document.getElementById('song-bar');
       const flap = document.getElementById('flap');
       const invWrap = document.getElementById('invWrap');
+      
+      let opened = false; // Variable para evitar que se abra dos veces
 
-      // Evento al hacer clic en "Abrir invitación"
-      abrirBtn.addEventListener('click', () => {
-        // Reproducir música (el navegador lo permite porque hay clic del usuario)
-        if (player && typeof player.playVideo === 'function') {
-          player.playVideo();
-          isPlaying = true;
+      function abrirInvitacion() {
+        if (opened) return;
+        opened = true;
+
+        // 1. Animación del sello original
+        if (sello) {
+            sello.style.transition = 'all 0.4s';
+            sello.style.opacity = '0';
+            sello.style.transform = 'translateX(-50%) scale(0.5) rotate(45deg)';
         }
 
-        // Mostrar controles de música
-        musicCtrl.classList.add('visible');
-        songBar.classList.add('visible');
-        setTimeout(() => songBar.classList.add('shown'), 100);
+        // 2. Animación de abrir la solapa
+        setTimeout(() => { 
+            flap.style.transform = 'rotateX(-165deg)'; 
+        }, 350);
 
-        // Animación de abrir el sobre
-        flap.style.transform = 'rotateX(180deg)'; // Abre la solapa
-        abrirBtn.style.display = 'none'; // Oculta el botón
-        
-        // Desliza la invitación hacia arriba después de abrir la solapa
+        // 3. Mostrar invitación y prender música
         setTimeout(() => {
           invWrap.classList.add('visible');
-        }, 500);
-      });
+          if (abrirBtn) abrirBtn.style.display = 'none';
+
+          // Reproducir música usando la API de YouTube
+          if (player && typeof player.playVideo === 'function') {
+            player.playVideo();
+            isPlaying = true;
+          }
+
+          // Mostrar controles de música visuales
+          if (musicCtrl) musicCtrl.classList.add('visible');
+          if (songBar) {
+             songBar.classList.add('visible');
+             setTimeout(() => songBar.classList.add('shown'), 100);
+          }
+        }, 1000);
+      }
+
+      // Asignar el evento tanto al botón como al sello (para que funcione si tocan cualquiera de los dos)
+      if (abrirBtn) abrirBtn.addEventListener('click', abrirInvitacion);
+      if (sello) sello.addEventListener('click', abrirInvitacion);
 
       // Evento al hacer clic en el botón flotante de música (🎵)
-      musicCtrl.addEventListener('click', () => {
-        if (isPlaying) {
-          player.pauseVideo();
-          musicCtrl.textContent = '🔇';
-        } else {
-          player.playVideo();
-          musicCtrl.textContent = '🎵';
-        }
-        isPlaying = !isPlaying;
-      });
+      if (musicCtrl) {
+          musicCtrl.addEventListener('click', () => {
+            if (isPlaying) {
+              player.pauseVideo();
+              musicCtrl.textContent = '🔇';
+            } else {
+              player.playVideo();
+              musicCtrl.textContent = '🎵';
+            }
+            isPlaying = !isPlaying;
+          });
+      }
     });
-
-    /* ── ABRIR SOBRE ── */
-    let opened = false;
-    function abrirInvitacion() {
-      if (opened) return;
-      opened = true;
-      const flap = document.getElementById('flap');
-      const sello = document.getElementById('sello');
-      const inv = document.getElementById('invWrap');
-      const btn = document.getElementById('abrirBtn');
-
-      sello.style.transition = 'all 0.4s';
-      sello.style.opacity = '0';
-      sello.style.transform = 'translateX(-50%) scale(0.5) rotate(45deg)';
-
-      setTimeout(() => { flap.style.transform = 'rotateX(-165deg)'; }, 350);
-      setTimeout(() => {
-        inv.classList.add('visible');
-        btn.style.display = 'none';
-
-        // Arrancar música al abrir la carta
-        musicStarted = true;
-        startMusic();
-      }, 1000);
-    }
-
-    document.getElementById('sello').addEventListener('click', abrirInvitacion);
-    document.getElementById('abrirBtn').addEventListener('click', abrirInvitacion);
   </script>
 </body>
 
