@@ -454,7 +454,7 @@
     }
 
 
-     /* Foto izquierda: ocupa las 2 filas */
+    /* Foto izquierda: ocupa las 2 filas */
     .foto-lateral {
       grid-column: 1;
       grid-row: 1 / 3;
@@ -734,6 +734,53 @@
         display: none;
       }
     }
+
+    /* ── ESTILOS DEL TEMPORIZADOR ── */
+    .countdown {
+      text-align: center;
+      margin: 30px auto;
+      font-family: inherit;
+      /* Hereda la fuente de tu invitación */
+    }
+
+    .countdown h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #333;
+      /* Ajusta al color de tus textos */
+    }
+
+    .time-blocks {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .time-box {
+      background: rgba(255, 255, 255, 0.8);
+      /* Fondo semi-transparente */
+      border-radius: 8px;
+      padding: 10px 15px;
+      min-width: 65px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(4px);
+      /* Efecto vidrio si tienes fondo con imagen */
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .time-box p {
+      margin: 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+    }
   </style>
 </head>
 
@@ -753,6 +800,29 @@
 
   <div id="yt-container">
     <div id="yt-player"></div>
+  </div>
+
+  <!-- SECCIÓN TEMPORIZADOR -->
+  <div id="countdown-container" class="countdown">
+    <h3>Faltan:</h3>
+    <div class="time-blocks">
+      <div class="time-box">
+        <span id="days">00</span>
+        <p>Días</p>
+      </div>
+      <div class="time-box">
+        <span id="hours">00</span>
+        <p>Horas</p>
+      </div>
+      <div class="time-box">
+        <span id="minutes">00</span>
+        <p>Min</p>
+      </div>
+      <div class="time-box">
+        <span id="seconds">00</span>
+        <p>Seg</p>
+      </div>
+    </div>
   </div>
 
   <!-- Control flotante de música -->
@@ -899,7 +969,7 @@
           'playsinline': 1,
           'controls': 0,
           'loop': 1,
-          'playlist': 'ZL_NhImx4LI' 
+          'playlist': 'ZL_NhImx4LI'
         }
       });
     }
@@ -912,7 +982,7 @@
       const songBar = document.getElementById('song-bar');
       const flap = document.getElementById('flap');
       const invWrap = document.getElementById('invWrap');
-      
+
       let opened = false; // Variable para evitar que se abra dos veces
 
       function abrirInvitacion() {
@@ -921,14 +991,14 @@
 
         // 1. Animación del sello original
         if (sello) {
-            sello.style.transition = 'all 0.4s';
-            sello.style.opacity = '0';
-            sello.style.transform = 'translateX(-50%) scale(0.5) rotate(45deg)';
+          sello.style.transition = 'all 0.4s';
+          sello.style.opacity = '0';
+          sello.style.transform = 'translateX(-50%) scale(0.5) rotate(45deg)';
         }
 
         // 2. Animación de abrir la solapa
-        setTimeout(() => { 
-            flap.style.transform = 'rotateX(-165deg)'; 
+        setTimeout(() => {
+          flap.style.transform = 'rotateX(-165deg)';
         }, 350);
 
         // 3. Mostrar invitación y prender música
@@ -945,8 +1015,8 @@
           // Mostrar controles de música visuales
           if (musicCtrl) musicCtrl.classList.add('visible');
           if (songBar) {
-             songBar.classList.add('visible');
-             setTimeout(() => songBar.classList.add('shown'), 100);
+            songBar.classList.add('visible');
+            setTimeout(() => songBar.classList.add('shown'), 100);
           }
         }, 1000);
       }
@@ -957,18 +1027,49 @@
 
       // Evento al hacer clic en el botón flotante de música (🎵)
       if (musicCtrl) {
-          musicCtrl.addEventListener('click', () => {
-            if (isPlaying) {
-              player.pauseVideo();
-              musicCtrl.textContent = '🔇';
-            } else {
-              player.playVideo();
-              musicCtrl.textContent = '🎵';
-            }
-            isPlaying = !isPlaying;
-          });
+        musicCtrl.addEventListener('click', () => {
+          if (isPlaying) {
+            player.pauseVideo();
+            musicCtrl.textContent = '🔇';
+          } else {
+            player.playVideo();
+            musicCtrl.textContent = '🎵';
+          }
+          isPlaying = !isPlaying;
+        });
       }
     });
+
+    /* ── LÓGICA DEL TEMPORIZADOR ── */
+    // Configura aquí la fecha exacta de la fiesta (Formato: Año-Mes-DíaTHora:Minuto:Segundo)
+    // Ejemplo: 20 de Octubre de 2026 a las 21:30 -> '2026-10-24T21:30:00'
+    const fechaFiesta = new Date('2026-10-24T21:30:00').getTime();
+
+    const countdownInterval = setInterval(() => {
+      const ahora = new Date().getTime();
+      const distancia = fechaFiesta - ahora;
+
+      // Cálculos matemáticos para días, horas, minutos y segundos
+      const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+      // Si la fecha ya pasó, detenemos el contador y mostramos un mensaje
+      if (distancia < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown-container").innerHTML = "<h3>¡Llegó el gran día!</h3>";
+        return;
+      }
+
+      // Inyectamos los valores en el HTML. 
+      // padStart(2, '0') sirve para que siempre se vean dos dígitos (ej: "05" en lugar de "5")
+      document.getElementById("days").innerText = dias.toString().padStart(2, '0');
+      document.getElementById("hours").innerText = horas.toString().padStart(2, '0');
+      document.getElementById("minutes").innerText = minutos.toString().padStart(2, '0');
+      document.getElementById("seconds").innerText = segundos.toString().padStart(2, '0');
+
+    }, 1000); // Se actualiza cada 1000 milisegundos (1 segundo)
   </script>
 </body>
 
