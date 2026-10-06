@@ -803,6 +803,54 @@
       color: #888888;
       font-weight: 500;
     }
+
+    .regalo-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(181, 146, 71, 0.3);
+      /* Borde dorado sutil */
+      border-radius: 16px;
+      padding: 20px 15px;
+      margin: 30px auto 15px auto;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .regalo-icon {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .regalo-frase {
+      font-size: 0.9rem;
+      color: #555555;
+      line-height: 1.4;
+      margin: 10px 0 15px 0;
+      font-style: italic;
+    }
+
+    .alias-box {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .alias-label {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: #b59247;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .alias-texto {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #222222;
+      margin: 2px 0 0 0;
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 
@@ -903,51 +951,42 @@
               </a>
               <span class="det-lugar-dir">Avenida Alvear 446</span>
             </div>
+            <!-- SECCIÓN TEMPORIZADOR -->
+            <div id="countdown-container" class="countdown">
+              <span class="label-dorado">FALTAN:</span>
+              <div class="time-blocks">
+                <div class="time-box">
+                  <span id="days">00</span>
+                  <p>DÍAS</p>
+                </div>
+                <div class="time-box">
+                  <span id="hours">00</span>
+                  <p>HORAS</p>
+                </div>
+                <div class="time-box">
+                  <span id="minutes">00</span>
+                  <p>MIN</p>
+                </div>
+                <div class="time-box">
+                  <span id="seconds">00</span>
+                  <p>SEG</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- SECCIÓN TEMPORIZADOR -->
-          <div id="countdown-container" class="countdown">
-            <span class="label-dorado">FALTAN:</span>
-            <div class="time-blocks">
-              <div class="time-box">
-                <span id="days">00</span>
-                <p>DÍAS</p>
-              </div>
-              <div class="time-box">
-                <span id="hours">00</span>
-                <p>HORAS</p>
-              </div>
-              <div class="time-box">
-                <span id="minutes">00</span>
-                <p>MIN</p>
-              </div>
-              <div class="time-box">
-                <span id="seconds">00</span>
-                <p>SEG</p>
-              </div>
+          <div class="regalo-card">
+            <div class="regalo-icon">🎁</div>
+            <span class="label-dorado">REGALO</span>
+            <p class="regalo-frase">
+              Tu presencia es nuestro mejor regalo. Pero si deseas hacernos un presente y colaborar con nuestra noche
+              especial, te dejamos nuestra cuenta:
+            </p>
+            <div class="alias-box">
+              <p class="alias-label">ALIAS:</p>
+              <p class="alias-texto">Sofia.408.cerro.mp</p>
             </div>
           </div>
-          <!-- <div id="countdown-container" class="countdown">
-            <div class="firma-texto">Faltan:</div>
-            <div class="time-blocks">
-              <div class="time-box">
-                <span id="days">00</span>
-                <p>Días</p>
-              </div>
-              <div class="time-box">
-                <span id="hours">00</span>
-                <p>Horas</p>
-              </div>
-              <div class="time-box">
-                <span id="minutes">00</span>
-                <p>Min</p>
-              </div>
-              <div class="time-box">
-                <span id="seconds">00</span>
-                <p>Seg</p>
-              </div>
-            </div>
-          </div> -->
 
           <div class="firma">
             <span class="firma-texto">Con todo mi amor</span>
