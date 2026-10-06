@@ -735,51 +735,73 @@
       }
     }
 
-    /* ── ESTILOS DEL TEMPORIZADOR ── */
-    .countdown {
+    /* Etiqueta superior dorada */
+    .label-dorado {
+      display: block;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: #b59247;
+      /* Tono dorado elegante */
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
       text-align: center;
-      margin: 30px auto;
-      font-family: inherit;
-      /* Hereda la fuente de tu invitación */
     }
 
-    .countdown h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: #333;
-      /* Ajusta al color de tus textos */
+    .lugar-titulo {
+      font-family: 'Playfair Display', serif, Georgia;
+      /* O la fuente serif que estés usando */
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 5px 0 2px 0;
+    }
+
+    .lugar-direccion {
+      font-style: italic;
+      color: #b59247;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Contenedor del temporizador */
+    .countdown {
+      text-align: center;
+      margin: 25px auto;
     }
 
     .time-blocks {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
     }
 
+    /* Tarjetas blancas redondeadas */
     .time-box {
-      background: rgba(255, 255, 255, 0.8);
-      /* Fondo semi-transparente */
-      border-radius: 8px;
-      padding: 10px 15px;
-      min-width: 65px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(4px);
-      /* Efecto vidrio si tienes fondo con imagen */
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 12px 10px;
+      min-width: 68px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      /* Sombra suave */
+      text-align: center;
     }
 
     .time-box span {
       display: block;
-      font-size: 2rem;
-      font-weight: bold;
-      color: #222;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #111111;
+      line-height: 1;
     }
 
     .time-box p {
-      margin: 0;
-      font-size: 0.8rem;
+      margin: 6px 0 0 0;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #666;
+      letter-spacing: 1.5px;
+      color: #888888;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -885,6 +907,27 @@
 
           <!-- SECCIÓN TEMPORIZADOR -->
           <div id="countdown-container" class="countdown">
+            <span class="label-dorado">FALTAN:</span>
+            <div class="time-blocks">
+              <div class="time-box">
+                <span id="days">00</span>
+                <p>DÍAS</p>
+              </div>
+              <div class="time-box">
+                <span id="hours">00</span>
+                <p>HORAS</p>
+              </div>
+              <div class="time-box">
+                <span id="minutes">00</span>
+                <p>MIN</p>
+              </div>
+              <div class="time-box">
+                <span id="seconds">00</span>
+                <p>SEG</p>
+              </div>
+            </div>
+          </div>
+          <!-- <div id="countdown-container" class="countdown">
             <div class="firma-texto">Faltan:</div>
             <div class="time-blocks">
               <div class="time-box">
@@ -904,7 +947,7 @@
                 <p>Seg</p>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="firma">
             <span class="firma-texto">Con todo mi amor</span>
