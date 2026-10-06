@@ -879,8 +879,9 @@
       s.style.animationDelay = (Math.random() * 22) + 's';
       sp.appendChild(s);
     }
+    
 
-    // --- LÓGICA DEL REPRODUCTOR DE YOUTUBE ---
+ // --- LÓGICA DEL REPRODUCTOR DE YOUTUBE ---
     let player;
     let isPlaying = false;
 
@@ -947,75 +948,6 @@
         }
         isPlaying = !isPlaying;
       });
-    });
-
-    /* ── MÚSICA via YouTube IFrame API ── */
-    // ID de Bitter Sweet Symphony - The Verve (video oficial / lyric video)
-    //const YT_ID = '1lyu1KKwC74';
-   
-
-    // Cargar la API de YouTube
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.head.appendChild(tag);
-
-    window.onYouTubeIframeAPIReady = function () {
-      player = new YT.Player('yt-player', {
-        videoId: YT_ID,
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0,
-          start: 0
-        },
-        events: {
-          onReady: function (e) {
-            musicReady = true;
-            e.target.setVolume(70);
-            // Si el sobre ya fue abierto antes de que la API cargara, arrancar igual
-            if (musicStarted) startMusic();
-          },
-          onStateChange: function (e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              isPlaying = true;
-              document.getElementById('music-ctrl').textContent = '🔇';
-            } else if (e.data === YT.PlayerState.PAUSED ||
-              e.data === YT.PlayerState.ENDED) {
-              isPlaying = false;
-              document.getElementById('music-ctrl').textContent = '🎵';
-            }
-          }
-        }
-      });
-    };
-
-    function startMusic() {
-      if (!musicReady || !player) return;
-      player.playVideo();
-      // Mostrar controles
-      const ctrl = document.getElementById('music-ctrl');
-      const bar = document.getElementById('song-bar');
-      ctrl.classList.add('visible');
-      bar.classList.add('visible');
-      setTimeout(() => bar.classList.add('shown'), 100);
-      // Ocultar barra después de 5s
-      setTimeout(() => {
-        bar.classList.remove('shown');
-        setTimeout(() => bar.classList.remove('visible'), 500);
-      }, 5000);
-    }
-
-    // Control pausa/reanudar
-    document.getElementById('music-ctrl').addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (!player) return;
-      if (isPlaying) { player.pauseVideo(); }
-      else { player.playVideo(); }
     });
 
     /* ── ABRIR SOBRE ── */
