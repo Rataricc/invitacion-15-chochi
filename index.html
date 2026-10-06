@@ -744,11 +744,15 @@
   <div class="sparkles" id="sparkles"></div>
 
   <!-- Player YouTube oculto -->
-  <div id="yt-container">
+  <!-- <div id="yt-container">
     <iframe id="yt-player" width="1" height="1"
       src="https://www.youtube.com/watch?v=ZL_NhImx4LI&list=RDZL_NhImx4LI&start_radio=1"
       allow="autoplay; encrypted-media" frameborder="0">
     </iframe>
+  </div> -->
+
+  <div id="yt-container">
+    <div id="yt-player"></div>
   </div>
 
   <!-- Control flotante de música -->
@@ -876,14 +880,79 @@
       sp.appendChild(s);
     }
 
+    // --- LÓGICA DEL REPRODUCTOR DE YOUTUBE ---
+    let player;
+    let isPlaying = false;
+
+    // 1. Cargar la API de YouTube asíncronamente
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 2. Esta función se ejecuta automáticamente cuando la API carga
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('yt-player', {
+        height: '1',
+        width: '1',
+        videoId: 'ZL_NhImx4LI', // Tu ID de canción actual
+        playerVars: {
+          'playsinline': 1,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'ZL_NhImx4LI' // Necesario en YouTube para que el loop funcione
+        }
+      });
+    }
+
+    // 3. Conectar la interacción del usuario con la música y la animación
+    document.addEventListener('DOMContentLoaded', () => {
+      const abrirBtn = document.getElementById('abrirBtn');
+      const musicCtrl = document.getElementById('music-ctrl');
+      const songBar = document.getElementById('song-bar');
+      const flap = document.getElementById('flap');
+      const invWrap = document.getElementById('invWrap');
+
+      // Evento al hacer clic en "Abrir invitación"
+      abrirBtn.addEventListener('click', () => {
+        // Reproducir música (el navegador lo permite porque hay clic del usuario)
+        if (player && typeof player.playVideo === 'function') {
+          player.playVideo();
+          isPlaying = true;
+        }
+
+        // Mostrar controles de música
+        musicCtrl.classList.add('visible');
+        songBar.classList.add('visible');
+        setTimeout(() => songBar.classList.add('shown'), 100);
+
+        // Animación de abrir el sobre
+        flap.style.transform = 'rotateX(180deg)'; // Abre la solapa
+        abrirBtn.style.display = 'none'; // Oculta el botón
+        
+        // Desliza la invitación hacia arriba después de abrir la solapa
+        setTimeout(() => {
+          invWrap.classList.add('visible');
+        }, 500);
+      });
+
+      // Evento al hacer clic en el botón flotante de música (🎵)
+      musicCtrl.addEventListener('click', () => {
+        if (isPlaying) {
+          player.pauseVideo();
+          musicCtrl.textContent = '🔇';
+        } else {
+          player.playVideo();
+          musicCtrl.textContent = '🎵';
+        }
+        isPlaying = !isPlaying;
+      });
+    });
+
     /* ── MÚSICA via YouTube IFrame API ── */
     // ID de Bitter Sweet Symphony - The Verve (video oficial / lyric video)
     //const YT_ID = '1lyu1KKwC74';
-    const YT_ID="ZL_NhImx4LI";
-    let player = null;
-    let musicReady = false;
-    let isPlaying = false;
-    let musicStarted = false;
+   
 
     // Cargar la API de YouTube
     const tag = document.createElement('script');
